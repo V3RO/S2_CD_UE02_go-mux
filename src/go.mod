@@ -1,4 +1,4 @@
-module src
+module github.com/V3RO/S2_CD_UE02_go-mux
 
 go 1.18
 
