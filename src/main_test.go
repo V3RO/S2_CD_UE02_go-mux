@@ -147,6 +147,50 @@ func TestDeleteProduct(t *testing.T) {
 	checkResponseCode(t, http.StatusNotFound, response.Code)
 }
 
+func TestClear(t *testing.T) {
+	clearTable()
+	addProducts(5)
+	var products []map[string]interface{}
+
+	req, _ := http.NewRequest("GET", "/products", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	json.Unmarshal(response.Body.Bytes(), &products)
+	checkResponseItemCount(t, 5, len(products))
+
+	req, _ = http.NewRequest("DELETE", "/products", nil)
+	response = executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	req, _ = http.NewRequest("GET", "/products", nil)
+	response = executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	json.Unmarshal(response.Body.Bytes(), &products)
+	checkResponseItemCount(t, 0, len(products))
+}
+
+func TestGetProductsByName(t *testing.T) {
+	clearTable()
+	addProducts(5)
+	var products []map[string]interface{}
+
+	req, _ := http.NewRequest("GET", "/product/product", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	json.Unmarshal(response.Body.Bytes(), &products)
+	checkResponseItemCount(t, 5, len(products))
+
+	req, _ = http.NewRequest("GET", "/product/product 1", nil)
+	response = executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	json.Unmarshal(response.Body.Bytes(), &products)
+	checkResponseItemCount(t, 1, len(products))
+}
+
 func ensureTableExists() {
 	if _, err := a.DB.Exec(tableCreationQuery); err != nil {
 		log.Fatal(err)
@@ -186,5 +230,11 @@ func executeRequest(req *http.Request) *httptest.ResponseRecorder {
 func checkResponseCode(t *testing.T, expected, actual int) {
 	if expected != actual {
 		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
+	}
+}
+
+func checkResponseItemCount(t *testing.T, expected, actual int) {
+	if expected != actual {
+		t.Errorf("Expected %d items. Got %d\n", expected, actual)
 	}
 }
