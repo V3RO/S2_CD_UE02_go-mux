@@ -1,5 +1,6 @@
 # In-Class Exercise 02 (go-mux)
-
+[![Build](https://github.com/V3RO/S2_CD_UE02_go-mux/actions/workflows/go.yml/badge.svg)]([https://github.com/V3RO/S2_CD_UE02_go-mux](https://github.com/V3RO/S2_CD_UE02_go-mux)/actions/workflows/go.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=V3RO_S2_CD_UE02_go-mux&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=V3RO_S2_CD_UE02_go-mux)
 ## Implementation
 
 ### Docker
